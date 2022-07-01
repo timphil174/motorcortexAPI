@@ -1,0 +1,23 @@
+{
+  "mysqlconfig": {
+    "host": "localhost",
+    "user": "your username",
+    "password": "your password",
+    "database": "your database",
+    "table_name": "your table_name"
+  },
+  "motorcortexAPI": {
+    "url": "wss://192.168.2.100:5568:5567",
+    "parameters": [
+      "fill", "the", "signal","names", "you", "want", "to", "store", "in", "your", "database"
+    ],
+    "divider": 1
+  },
+  "InfluxAPI": {
+    "token": "your acces token",
+    "url": "http://localhost:8086",
+    "org": "your organisation name",
+    "bucket": "your bucket name"
+  },
+  "batch_size": 10000
+}
