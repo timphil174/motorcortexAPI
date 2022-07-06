@@ -17,6 +17,7 @@
     "token": "your acces token",
     "url": "http://localhost:8086",
     "org": "your organisation name",
+    "org_id": "your org id",
     "bucket": "your bucket name"
   },
   "batch_size": 10000
