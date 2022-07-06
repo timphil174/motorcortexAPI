@@ -1,0 +1,27 @@
+{
+ "meta": {
+  "version": "1",
+  "type": "task",
+  "name": "1h_max -Template",
+  "description": "template created from task: 1h_max "
+ },
+ "content": {
+  "data": {
+   "type": "task",
+   "attributes": {
+    "status": "active",
+    "name": "1h_max ",
+    "flux": "option task = {name: \"1h_max \", every: 1h, offset: 30s}\n\nfrom(bucket: \"1m_max\")\n    |> range(start: -1h)\n    |> filter(fn: (r) => r._measurement == \"root\")\n    |> aggregateWindow(every: 1h, fn: max)\n    |> to(bucket: \"1h_max\", org: \"MTXhistorian\")",
+    "every": "1h",
+    "offset": "30s"
+   },
+   "relationships": {
+    "label": {
+     "data": []
+    }
+   }
+  },
+  "included": []
+ },
+ "labels": []
+}
