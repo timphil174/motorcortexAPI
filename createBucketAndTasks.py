@@ -73,3 +73,5 @@ taskapi.create_task_every("1h_max",flux1h_max,"1h",organization)
 taskapi.create_task_every("1h_min",flux1h_min,"1h",organization)
 taskapi.create_task_every("8h_max",flux8h_max,"8h",organization)
 taskapi.create_task_every("8h_min",flux8h_min,"8h",organization)
+
+print("success")
