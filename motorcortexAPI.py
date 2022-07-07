@@ -5,6 +5,7 @@ from influxdb_client import InfluxDBClient
 from influxdb_client.client.write_api import ASYNCHRONOUS
 import json
 from sqlalchemy import create_engine
+import time
 
 
 def get_config():
@@ -47,7 +48,7 @@ def main():
             df = pd.DataFrame(values, index=t)
 
             #   write to MySQL and InfluxDB
-            df.to_sql(config['mysqlconfig']['table_name'], engine, if_exists='append')
+            df.to_sql(config['mysqlconfig']['table_name'], engine, if_exists='append', index=True, index_label="time")
             write_api.write(bucket=config['InfluxAPI']['bucket'], record=df, data_frame_measurement_name='root')
 
             #   release of memory
