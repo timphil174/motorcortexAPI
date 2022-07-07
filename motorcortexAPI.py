@@ -1,4 +1,3 @@
-import time
 from motorcortex_tools import datalogger
 import numpy as np
 import pandas as pd
