@@ -38,8 +38,6 @@ def main():
     batch_size = config['batch_size']
     seconds = 0
     while True:
-        print(len(logger.traces[params[0]]["t"]))
-        time.sleep(1)
         if len(logger.traces[params[0]]["t"]) >= batch_size:   # batch is full so ready to be sent to DB
             values = {}
             t = np.array(logger.traces[params[0]]["t"][:batch_size])
@@ -54,7 +52,7 @@ def main():
             #   release of memory
             for a in range(nbr_param):
                 del logger.traces[params[a]]["y"][0][:batch_size]
-            del logger.traces[params[0]]["t"][:batch_size]
+                del logger.traces[params[a]]["t"][:batch_size]
             seconds += 1
             print('seconds wrote:', 10*seconds)
 
