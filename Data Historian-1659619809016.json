@@ -1,0 +1,255 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_INFLUXDB",
+      "label": "InfluxDB",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "influxdb",
+      "pluginName": "InfluxDB"
+    },
+    {
+      "name": "DS_MYSQL",
+      "label": "MySQL",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "mysql",
+      "pluginName": "MySQL"
+    }
+  ],
+  "__elements": [],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "9.0.2"
+    },
+    {
+      "type": "datasource",
+      "id": "influxdb",
+      "name": "InfluxDB",
+      "version": "1.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "mysql",
+      "name": "MySQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "iteration": 1659619787031,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "stepBefore",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 6,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "maxDataPoints": 1480,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "repeat": "signals",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "hide": false,
+          "query": "from(bucket : \"${Max_database_selection}\")\r\n  |>range(start : v.timeRangeStart, stop : v.timeRangeStop)\r\n  |>filter(fn : (r)=> r._measurement == \"root\")\r\n  |>filter(fn : (r)=> r._field == \"${signals}\")",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "hide": false,
+          "query": "from(bucket : \"${Min_database_selection}\")\r\n  |>range(start : v.timeRangeStart, stop : v.timeRangeStop)\r\n  |>filter(fn : (r)=> r._measurement == \"root\")\r\n  |>filter(fn : (r)=> r._field == \"${signals}\")",
+          "refId": "B"
+        }
+      ],
+      "title": "${signals}",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 36,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "definition": "SELECT IF($__timeTo() - $__timeFrom() < 2.1*10, \"RawData\", \nIF($__timeTo() - $__timeFrom() < 2481*10, \"1s_max\", \nIF($__timeTo() - $__timeFrom() < 1008001*10, \"1m_max\",\nIF($__timeTo() - $__timeFrom() < 200920000*10, \"1h_max\", \"8h_max\"))))\n\n",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "Max_database_selection",
+        "options": [],
+        "query": "SELECT IF($__timeTo() - $__timeFrom() < 2.1*10, \"RawData\", \nIF($__timeTo() - $__timeFrom() < 2481*10, \"1s_max\", \nIF($__timeTo() - $__timeFrom() < 1008001*10, \"1m_max\",\nIF($__timeTo() - $__timeFrom() < 200920000*10, \"1h_max\", \"8h_max\"))))\n\n",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "definition": "SELECT IF($__timeTo() - $__timeFrom() < 2.1*10, \"RawData\", \nIF($__timeTo() - $__timeFrom() < 2481*10, \"1s_min\", \nIF($__timeTo() - $__timeFrom() < 1008001*10, \"1m_min\",\nIF($__timeTo() - $__timeFrom() < 200920000*10, \"1h_min\", \"8h_min\"))))",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "Min_database_selection",
+        "options": [],
+        "query": "SELECT IF($__timeTo() - $__timeFrom() < 2.1*10, \"RawData\", \nIF($__timeTo() - $__timeFrom() < 2481*10, \"1s_min\", \nIF($__timeTo() - $__timeFrom() < 1008001*10, \"1m_min\",\nIF($__timeTo() - $__timeFrom() < 200920000*10, \"1h_min\", \"8h_min\"))))",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL}"
+        },
+        "definition": "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE (TABLE_NAME = \"rawdata\"\n AND COLUMN_NAME != \"time\")",
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "signals",
+        "options": [],
+        "query": "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE (TABLE_NAME = \"rawdata\"\n AND COLUMN_NAME != \"time\")",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "2022-07-04T12:45:54.779Z",
+    "to": "2022-07-04T12:46:48.878Z"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Data Historian",
+  "uid": "IdswpI67z",
+  "version": 17,
+  "weekStart": ""
+}
